@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .masonry-container {
+    column-count: 3;
+    column-gap: 10px 10px;
+    width: 1200px;
+    max-width: 100%;
+  }
+
+  @media screen and (max-width: 400px) {
+    .masonry-container {
+      column-count: 1;
+      column-gap: 4px 4px;
+    }
+  }
+
+  @media screen and (max-width: 720px) {
+    .masonry-container {
+      column-count: 2;
+    }
+  }
+  .masonry-item {
+    display: inline-block;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
