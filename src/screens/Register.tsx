@@ -107,7 +107,7 @@ const Register: React.FC = () => {
           <AntForm method="post" onFinish={onFinish}>
             <div>
               <h2 className="text-center text-2xl font-bold mb-4">
-                Register to your account
+                Register an account with us
               </h2>
             </div>
             <AntForm.Item
@@ -159,7 +159,7 @@ const Register: React.FC = () => {
               ]}
               hasFeedback
             >
-              <Input.Password />
+              <Input.Password placeholder="" />
             </AntForm.Item>
 
             <AntForm.Item
