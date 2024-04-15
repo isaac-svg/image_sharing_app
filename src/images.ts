@@ -21,7 +21,7 @@ const IMAGES = [
   },
 ];
 
-function getImageById(id: number) {
+export function getImageById(id: number) {
   return IMAGES.find((image) => image.id === id);
 }
 
