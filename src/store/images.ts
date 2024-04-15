@@ -74,7 +74,7 @@ export const useImages = create<Page>()((set, get) => ({
     currentPage: 0,
   },
   getImages: async () => {
-    const response = await fetch("http://localhost:9000/all");
+    const response = await fetch("https://image-sharing-api-ten.vercel.app/all");
     const data = await response.json();
     console.log(data, "all images");
     if (data && data.posts) {
@@ -89,7 +89,7 @@ export const useImages = create<Page>()((set, get) => ({
   searchCategory: async ({ category }: { category: string | undefined }) => {
     try {
       const response = await fetch(
-        `http://localhost:9000/all?category=${category}`
+        `https://image-sharing-api-ten.vercel.app/all?category=${category}`
       );
       const data = await response.json();
       console.log(data, "all images");
@@ -125,7 +125,7 @@ export const useImages = create<Page>()((set, get) => ({
       description,
     };
     try {
-      const response = await fetch("http://localhost:9000/myunsplash/create", {
+      const response = await fetch("https://image-sharing-api-ten.vercel.app/myunsplash/create", {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({ ...payload }),
@@ -168,7 +168,7 @@ export const useImages = create<Page>()((set, get) => ({
     voterId: string;
   }) => {
     try {
-      const response = await fetch("http://localhost:9000/myunsplash/vote", {
+      const response = await fetch("https://image-sharing-api-ten.vercel.app/myunsplash/vote", {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -200,7 +200,7 @@ export const useImages = create<Page>()((set, get) => ({
     authorId: string;
   }) => {
     try {
-      const response = await fetch("http://localhost:9000/myunsplash/delete", {
+      const response = await fetch("https://image-sharing-api-ten.vercel.app/myunsplash/delete", {
         method: "DELETE",
         body: JSON.stringify({ imageId, authorId }),
         headers: {
@@ -243,7 +243,7 @@ export const useImages = create<Page>()((set, get) => ({
     description: string;
   }) => {
     const response = await fetch(
-      `http://localhost:9000/myunsplash/update/${authorId}`,
+      `https://image-sharing-api-ten.vercel.app/myunsplash/update/${authorId}`,
       {
         method: "PATCH",
         body: JSON.stringify({ imageId, authorId, url, description }),
