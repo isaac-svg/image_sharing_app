@@ -27,14 +27,17 @@ export async function action({ request }: { request: Request }) {
   console.log(credentials);
   //   uploadImage(image as unknown as { image: string });
   console.log(credentials);
-  const response = await fetch("http://localhost:9000/myunsplash/create", {
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify({ ...credentials }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    "https://image-sharing-api-ten.vercel.app/myunsplash/create",
+    {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({ ...credentials }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   console.log(response, "response");
   const data = await response.json();
   console.log(data);
@@ -83,14 +86,17 @@ const Upload: React.FC = () => {
       category,
       description,
     };
-    const response = await fetch("http://localhost:9000/myunsplash/create", {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({ ...payload }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://image-sharing-api-ten.vercel.app/myunsplash/create",
+      {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({ ...payload }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     console.log(response, "response");
     const data = await response.json();
 

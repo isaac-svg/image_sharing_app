@@ -17,14 +17,17 @@ export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const credentials = Object.fromEntries(formData);
   console.log(credentials);
-  const response = await fetch("http://localhost:9000/auth/login", {
-    method: "POST",
-    credentials: "include",
-    body: JSON.stringify({ ...credentials }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetch(
+    "https://image-sharing-api-ten.vercel.app/auth/login",
+    {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({ ...credentials }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   const data = await response.json();
   console.log(data);
@@ -67,14 +70,17 @@ const Login: React.FC = () => {
 
   const onFinish = async (values: { username: string; password: string }) => {
     console.log("Received values of form: ", values);
-    const response = await fetch("http://localhost:9000/auth/login", {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({ ...values }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://image-sharing-api-ten.vercel.app/auth/login",
+      {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({ ...values }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
     console.log(data);
     if (data.success) {
