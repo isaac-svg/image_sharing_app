@@ -14,7 +14,12 @@ const Content = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setPosts(await getImages());
+        const payload = await getImages();
+        setPosts(payload);
+        console.log({ payload });
+        if (!payload.length) {
+          console.log("first");
+        }
       } catch (error) {
         console.error(error);
       }
@@ -37,7 +42,6 @@ const Content = () => {
             return (
               <Imageview key={image._id}>
                 <Link
-                  key={image._id}
                   to={`img/${image._id}`}
                   className="masonry-item  shadow-sm   cursor-pointer  rounded-lg overflow-hidden  "
                 >

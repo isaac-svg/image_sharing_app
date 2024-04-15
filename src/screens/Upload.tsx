@@ -8,6 +8,7 @@ import {
   CheckboxProps,
   Alert,
   Select,
+  message,
 } from "antd";
 import { useModal } from "../store/modal"; // const [loading, setLoading] = useState(false);
 const { TextArea } = Input;
@@ -15,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import { UploadOutlined } from "@ant-design/icons";
 import { convertFileToBase64 } from "../lib/base64";
+import { useImages } from "../store/images";
 // import { uploadImage } from "../lib/uploadtocloud";
 // import Select from "../components/Select";
 
@@ -27,17 +29,14 @@ export async function action({ request }: { request: Request }) {
   console.log(credentials);
   //   uploadImage(image as unknown as { image: string });
   console.log(credentials);
-  const response = await fetch(
-    "https://image-sharing-api-ten.vercel.app/myunsplash/create",
-    {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({ ...credentials }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await fetch("http://localhost:9000/myunsplash/create", {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({ ...credentials }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   console.log(response, "response");
   const data = await response.json();
   console.log(data);
@@ -51,17 +50,19 @@ const Upload: React.FC = () => {
 
   const [filename, setFilename] = useState<string>();
   const [isError, setIsError] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const [category, setCategory] = useState<string>();
   const fileRef = useRef<HTMLInputElement>(null);
   const { upload } = useModal((state) => state.protectedmodals);
+  const uploadImage = useImages((state) => state.createImage);
   const { upload: locaupload } = useModal((state) => state.localmodals);
   const toggleuploadModal = useModal((state) => state.toggleuploadModal);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [description, setDescription] = useState<string>("");
   const navigate = useNavigate();
-
+  const info = ({ msg }: { msg: string }) => {
+    message.info(msg);
+  };
   const handleCancel = () => {
     console.log("Clicked cancel button");
     toggleuploadModal(false);
@@ -78,36 +79,28 @@ const Upload: React.FC = () => {
     setConfirmLoading(true);
 
     const filedata = fileRef.current?.files?.[0] as Blob;
-    const base64Image = await convertFileToBase64(filedata);
+    const base64Image = (await convertFileToBase64(filedata)) as
+      | string
+      | undefined;
     setFilename(fileRef.current?.files?.[0]?.name);
-    const payload = {
+
+    const response = await uploadImage({
       base64Image,
       url,
       category,
       description,
-    };
-    const response = await fetch(
-      "https://image-sharing-api-ten.vercel.app/myunsplash/create",
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({ ...payload }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log(response, "response");
-    const data = await response.json();
+    });
 
-    if (data) {
-      setIsSuccess(true);
+    if (response.length) {
       // setLoading(false);
+      info({ msg: "Upload successful" });
       setConfirmLoading(false);
       toggleuploadModal(false);
+    } else {
+      // setLoading(false);
+      setConfirmLoading(false);
+      setIsError(true);
     }
-    console.log(url, category);
-    console.log(data);
   };
   console.log(upload, "upload");
 
@@ -119,22 +112,14 @@ const Upload: React.FC = () => {
     <>
       {isError && (
         <Alert
-          message="Please ensure all required fileds are selected"
+          message="Image upload failed. Check your internet connections!"
           className="h-14 bg-green absolute top-5 right-5 z-[9999]"
           type="error"
           showIcon
           closable
         />
       )}
-      {isSuccess && (
-        <Alert
-          message="Image upload successful"
-          className="h-14 bg-green absolute top-5 right-5 z-[9999]"
-          type="success"
-          showIcon
-          closable
-        />
-      )}
+
       <>
         <Modal
           title="Upload"

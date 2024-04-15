@@ -11,7 +11,7 @@ const App: React.FC = () => (
     <Layout className="rounded-md overflow-x-hidden w-[calc(100% - 8px)] max-w-[calc(100% - 8px)]">
       <Header />
       <Outlet />
-      <Footer className="text-center text-white bg-blue-600">Footer</Footer>
+      <Footer className="text-center text-white bg-blue-600">iShare</Footer>
     </Layout>
   </Flex>
 );

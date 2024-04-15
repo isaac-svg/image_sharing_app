@@ -7,9 +7,7 @@ type Props = {
 const Button = ({ className, children }: Props) => {
   return (
     <div className={`${className}`}>
-      <AntBtn type="primary" className="bg-green-600 hover:bg-green-600">
-        {children}
-      </AntBtn>
+      <AntBtn type="primary">{children}</AntBtn>
     </div>
   );
 };

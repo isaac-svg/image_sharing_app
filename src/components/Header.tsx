@@ -1,15 +1,15 @@
 import SearchBox from "./Search";
 import Button from "./Button";
-import { PlusOutlined } from "@ant-design/icons";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Header as AntHeader } from "antd/es/layout/layout";
-import { Flex } from "antd";
+import { Flex, Spin } from "antd";
 import { useModal } from "../store/modal";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
 const Header = () => {
   const openModal = useModal((state) => state.openModal);
-
+  const loading = useModal((state) => state.localmodals.loading);
   useEffect(() => {
     async function loadAuth() {
       await openModal();
@@ -27,7 +27,7 @@ const Header = () => {
       >
         <Flex align="center" gap="small">
           <div>
-            <span className="text-2xl font-bold">letshare</span>
+            <span className="text-2xl font-bold shadow-md">iShare</span>
           </div>
           <SearchBox loading={false} />
         </Flex>
@@ -35,7 +35,19 @@ const Header = () => {
           to={upload ? "/upload" : "/login"}
           onClick={async () => await openModal()}
         >
-          <Button className="hidden md:block  text-white">Add photo</Button>
+          <Button className="hidden md:block text-lg  text-white">
+            {loading && (
+              <Spin
+                indicator={
+                  <LoadingOutlined
+                    style={{ fontSize: 20, color: "white", marginRight: "6px" }}
+                    spin
+                  />
+                }
+              />
+            )}
+            Add Photo
+          </Button>
           <Button className="block md:hidden  ">
             <PlusOutlined className="w-full text-white font-extrabold block  items-center justify-center " />
           </Button>

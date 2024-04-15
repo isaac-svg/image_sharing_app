@@ -7,27 +7,25 @@ import {
   Modal,
   message,
   Form as AntForm,
+  Spin,
 } from "antd";
 import { useModal } from "../store/modal";
 import { Form, Link, useNavigate } from "react-router-dom";
 import { redirect } from "react-router-dom";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LoadingOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const credentials = Object.fromEntries(formData);
   console.log(credentials);
-  const response = await fetch(
-    "https://image-sharing-api-ten.vercel.app/auth/login",
-    {
-      method: "POST",
-      credentials: "include",
-      body: JSON.stringify({ ...credentials }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await fetch("http://localhost:9000/auth/login", {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({ ...credentials }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   const data = await response.json();
   console.log(data);
@@ -70,24 +68,25 @@ const Login: React.FC = () => {
 
   const onFinish = async (values: { username: string; password: string }) => {
     console.log("Received values of form: ", values);
-    const response = await fetch(
-      "https://image-sharing-api-ten.vercel.app/auth/login",
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({ ...values }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    setConfirmLoading(true);
+    const response = await fetch("http://localhost:9000/auth/login", {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({ ...values }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const data = await response.json();
     console.log(data);
     if (data.success) {
       info({ msg: "login successfull" });
+      setConfirmLoading(false);
+
       return navigate("/");
     } else {
       setIsError(true);
+      setConfirmLoading(false);
       setTimeout(() => {
         setIsError(false);
       }, 3000);
@@ -161,6 +160,13 @@ const Login: React.FC = () => {
             <div className="mr-auto gap-4  flex justify-end">
               <Button onClick={handleCancel}>Cancel</Button>
               <Button htmlType="submit" className="bg-blue-500 text-white">
+                {confirmLoading && (
+                  <Spin
+                    indicator={
+                      <LoadingOutlined style={{ fontSize: 24 }} spin />
+                    }
+                  />
+                )}
                 {/* <button type="submit">login</button> */}
                 Login
               </Button>
