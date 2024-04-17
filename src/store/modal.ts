@@ -102,7 +102,7 @@ export const useModal = create<modal>()((set, get) => ({
         state.protectedmodals = { ...state.protectedmodals, loading: true };
         return state;
       });
-      console.log(get().protectedmodals);
+      // console.log(get().protectedmodals);
       const response = await fetch(
         "https://image-sharing-api-ten.vercel.app/auth/profile",
         {
@@ -114,7 +114,7 @@ export const useModal = create<modal>()((set, get) => ({
       );
       const payload = await response.json();
       localStorage.setItem("userPayload", JSON.stringify(payload));
-      // console.log(payload, "profile payload");
+      console.log(payload, "profile payload");
       if (payload.id) {
         set((state) => {
           return {

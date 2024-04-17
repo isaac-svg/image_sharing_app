@@ -78,7 +78,7 @@ export const useImages = create<Page>()((set, get) => ({
       "https://image-sharing-api-ten.vercel.app/all"
     );
     const data = await response.json();
-    console.log(data, "all images");
+    // console.log(data, "all images");
     if (data && data.posts) {
       set((state) => {
         state.page.posts = [...data.posts];
@@ -94,7 +94,7 @@ export const useImages = create<Page>()((set, get) => ({
         `https://image-sharing-api-ten.vercel.app/all?category=${category}`
       );
       const data = await response.json();
-      console.log(data, "all images");
+      // console.log(data, "all images");
       if (data && data.posts) {
         set((state) => ({
           page: {
@@ -139,10 +139,10 @@ export const useImages = create<Page>()((set, get) => ({
         }
       );
       const data = await response.json();
-      console.log(data, "just data");
+      // console.log(data, "just data");
       set((state) => {
         if (data._id) {
-          console.log(data, "data._id");
+          // console.log(data, "data._id");
 
           return {
             ...state,
