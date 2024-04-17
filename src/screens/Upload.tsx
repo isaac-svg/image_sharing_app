@@ -29,7 +29,7 @@ export async function action({ request }: { request: Request }) {
   console.log(credentials);
   //   uploadImage(image as unknown as { image: string });
   console.log(credentials);
-  const response = await fetch("http://localhost:9000/myunsplash/create", {
+  const response = await fetch("/myunsplash/create", {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({ ...credentials }),

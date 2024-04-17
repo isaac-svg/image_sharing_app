@@ -74,7 +74,9 @@ export const useImages = create<Page>()((set, get) => ({
     currentPage: 0,
   },
   getImages: async () => {
-    const response = await fetch("https://image-sharing-api-ten.vercel.app/all");
+    const response = await fetch(
+      "https://image-sharing-api-ten.vercel.app/all"
+    );
     const data = await response.json();
     console.log(data, "all images");
     if (data && data.posts) {
@@ -125,14 +127,17 @@ export const useImages = create<Page>()((set, get) => ({
       description,
     };
     try {
-      const response = await fetch("https://image-sharing-api-ten.vercel.app/myunsplash/create", {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({ ...payload }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://image-sharing-api-ten.vercel.app/myunsplash/create",
+        {
+          method: "POST",
+          credentials: "include",
+          body: JSON.stringify({ ...payload }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       console.log(data, "just data");
       set((state) => {
@@ -168,14 +173,17 @@ export const useImages = create<Page>()((set, get) => ({
     voterId: string;
   }) => {
     try {
-      const response = await fetch("https://image-sharing-api-ten.vercel.app/myunsplash/vote", {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ imageId, imageAuthorId, voterId }),
-      });
+      const response = await fetch(
+        "https://image-sharing-api-ten.vercel.app/myunsplash/vote",
+        {
+          method: "PATCH",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ imageId, imageAuthorId, voterId }),
+        }
+      );
       const data = await response.json();
       set((state) => {
         state.page.posts = state.page.posts.map((image) => {
@@ -200,14 +208,17 @@ export const useImages = create<Page>()((set, get) => ({
     authorId: string;
   }) => {
     try {
-      const response = await fetch("https://image-sharing-api-ten.vercel.app/myunsplash/delete", {
-        method: "DELETE",
-        body: JSON.stringify({ imageId, authorId }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://image-sharing-api-ten.vercel.app/myunsplash/delete",
+        {
+          method: "DELETE",
+          body: JSON.stringify({ imageId, authorId }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       console.log(data);
       set((state) => {
