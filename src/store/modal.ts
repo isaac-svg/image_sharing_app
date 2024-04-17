@@ -125,6 +125,12 @@ export const useModal = create<modal>()((set, get) => ({
               register: false,
               upload: true,
             },
+            protectedmodals: {
+              loading: false,
+              login: false,
+              register: false,
+              upload: true,
+            },
           };
         });
         console.log(get().protectedmodals);
