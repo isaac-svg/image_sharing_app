@@ -149,7 +149,7 @@ const Modal: React.FC = () => {
                     onClick={async () => {
                       if (!user.name) {
                         navigate("/login");
-
+                        window.location.reload();
                         return;
                       }
                       setIsLiking(true);
