@@ -144,7 +144,6 @@ export const useImages = create<Page>()((set, get) => ({
         if (data._id) {
           console.log(data, "data._id");
 
-          state.page.posts = [data, ...state.page.posts];
           return {
             ...state,
             page: {
