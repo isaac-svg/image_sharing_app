@@ -27,7 +27,7 @@ const Header = () => {
       >
         <Flex align="center" gap="small">
           <div>
-            <span className="text-2xl font-bold shadow-md">iShare</span>
+            <span className="text-2xl font-bold ">lvShare</span>
           </div>
           <SearchBox loading={false} />
         </Flex>
