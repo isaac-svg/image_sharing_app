@@ -147,7 +147,7 @@ export const useImages = create<Page>()((set, get) => ({
           return {
             ...state,
             page: {
-              posts: [...state.page.posts, data],
+              posts: [data,...state.page.posts ],
               currentPage: state.page.currentPage,
               totalImages: state.page.totalImages,
               totalPages: state.page.totalImages,
