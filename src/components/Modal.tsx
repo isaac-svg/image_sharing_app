@@ -74,7 +74,12 @@ const Modal: React.FC = () => {
             />
           </div>
           <div className="w-full py-2">
-            <p className="text-base">{image?.description}</p>
+            <p className="text-base text-gray-700">Category:</p>
+            <p>{image?.category}</p>
+          </div>
+          <div className="w-full py-2">
+            <p className="text-base text-gray-700">Description: </p>
+            <p>{image?.description}</p>
           </div>
           {image?.authorId === user.id ? (
             <div className="mr-auto  my-4 gap-4  flex justify-end">
