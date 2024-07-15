@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { BASE_ENDPOINT } from "../config/base";
 
 type modal = {
   protectedmodals: {
@@ -103,15 +104,12 @@ export const useModal = create<modal>()((set, get) => ({
         return state;
       });
       // console.log(get().protectedmodals);
-      const response = await fetch(
-        "https://image-sharing-api-ten.vercel.app/auth/profile",
-        {
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${BASE_ENDPOINT}/auth/profile`, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const payload = await response.json();
       localStorage.setItem("userPayload", JSON.stringify(payload));
       console.log(payload, "profile payload");

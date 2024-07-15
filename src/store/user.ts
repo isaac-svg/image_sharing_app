@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { BASE_ENDPOINT } from "../config/base";
 
 export type User = {
   user: {
@@ -26,15 +27,12 @@ export const useUser = create<User>()((set, get) => ({
     isAuthenticated: false,
   },
   getUserPayload: async () => {
-    const response = await fetch(
-      "https://image-sharing-api-ten.vercel.app/auth/profile",
-      {
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${BASE_ENDPOINT}/auth/profile`, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const payload = await response.json();
     console.log(payload, "userPayload");
     set((state) => {
