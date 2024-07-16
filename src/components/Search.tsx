@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { Input, message } from "antd";
 import { useImages } from "../store/images";
-import Message from "./Message";
 
 const { Search } = Input;
-type Props = {
-  loading: boolean;
-};
 
-const SearchBox = ({ loading }: Props) => {
+const SearchBox = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState<string | undefined>("");
-  const [isError, setIsError] = useState<boolean>(false);
 
   const queryData = useImages((state) => state.queryData);
   const [messageApi, contextHolder] = message.useMessage();

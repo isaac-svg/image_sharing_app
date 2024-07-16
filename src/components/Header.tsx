@@ -29,7 +29,7 @@ const Header = () => {
           <div>
             <span className="text-2xl font-bold ">MemShare</span>
           </div>
-          <SearchBox loading={true} />
+          <SearchBox />
         </Flex>
         <Link
           to={upload ? "/upload" : "/login"}

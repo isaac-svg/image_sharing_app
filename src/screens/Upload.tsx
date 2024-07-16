@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import {
   Button,
   Input,
@@ -15,10 +15,10 @@ const { TextArea } = Input;
 import { useNavigate } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import { UploadOutlined } from "@ant-design/icons";
-import { convertFileToBase64 } from "../lib/base64";
+// import { convertFileToBase64 } from "../lib/base64";
 import { useImages } from "../store/images";
-import { uploadResource, uploadImage } from "../lib/uploadtocloud";
-import { User } from "../store/user";
+import { uploadImage } from "../lib/uploadtocloud";
+// import { User } from "../store/user";
 // import { uploadImage } from "../lib/uploadtocloud";
 // import Select from "../components/Select";
 
@@ -31,7 +31,7 @@ export async function action({ request }: { request: Request }) {
   // console.log(credentials);
   //   uploadImage(image as unknown as { image: string });
   // console.log(credentials);
-  const response = await fetch("/myunsplash/create", {
+  await fetch("/myunsplash/create", {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({ ...credentials }),
@@ -40,7 +40,7 @@ export async function action({ request }: { request: Request }) {
     },
   });
   // console.log(response, "response");
-  const data = await response.json();
+  // const data = await response.json();
   // console.log(data);
   return redirect("/");
 }

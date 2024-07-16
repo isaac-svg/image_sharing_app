@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Modal as AntModal, Button, Image, Spin, message } from "antd";
+import { Modal as AntModal, Button, Image, Spin, message } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useImages } from "../store/images";
 import { useUser } from "../store/user";
