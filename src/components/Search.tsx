@@ -24,7 +24,7 @@ const SearchBox = () => {
       <Search
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="input search loading default flex-1"
+        placeholder="Search for momemories"
         loading={isLoading}
         onSubmit={() => {
           if (query?.trim() === "") {
