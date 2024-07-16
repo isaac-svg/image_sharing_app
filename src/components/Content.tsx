@@ -28,7 +28,7 @@ const Content = () => {
     if (response.length === 0) {
       setHasMore(false);
     } else {
-      setPosts((prevData: SingleImage[]) => [...prevData, ...response]);
+      // setPosts((prevData: SingleImage[]) => [...response]);
     }
 
     setLoading(false);
@@ -55,9 +55,7 @@ const Content = () => {
       try {
         const payload = await getImages(0, 15);
         setPosts(payload);
-        console.log({ payload });
         if (!payload.length) {
-          console.log("first");
         }
       } catch (error) {
         console.error(error);
@@ -66,9 +64,9 @@ const Content = () => {
 
     fetchData();
   }, []);
-  useEffect(() => {
-    setPosts(posts);
-  }, [posts]);
+  // useEffect(() => {
+  //   setPosts(posts);
+  // }, []);
 
   return (
     <AntContent className="h-auto min-h-screen px-2 py-4">
@@ -79,20 +77,18 @@ const Content = () => {
           // <div className="bg-green-500 w-screen h-screen"></div>
           _posts?.map((image) => {
             return (
-              <>
-                <Imageview key={image._id}>
-                  <Link
-                    to={`img/${image._id}`}
-                    className="masonry-item  shadow-sm   cursor-pointer  rounded-lg overflow-hidden  "
-                  >
-                    <img
-                      src={`${image.base64Image || image.url}`}
-                      alt={`${image.category}`}
-                      className="object-cover h-full w-full"
-                    />
-                  </Link>
-                </Imageview>
-              </>
+              <Imageview key={image._id}>
+                <Link
+                  to={`img/${image._id}`}
+                  className="masonry-item  shadow-sm   cursor-pointer  rounded-lg overflow-hidden  "
+                >
+                  <img
+                    src={`${image.base64Image || image.url}`}
+                    alt={`${image.category}`}
+                    className="object-cover h-full w-full"
+                  />
+                </Link>
+              </Imageview>
             );
           })
         )}

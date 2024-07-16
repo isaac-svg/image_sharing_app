@@ -34,7 +34,7 @@ export const useUser = create<User>()((set, get) => ({
       },
     });
     const payload = await response.json();
-    console.log(payload, "userPayload");
+    // console.log(payload, "userPayload");
     set((state) => {
       state.user = { ...state.user, ...payload };
       return state;

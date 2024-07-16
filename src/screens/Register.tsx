@@ -8,7 +8,7 @@ import { BASE_ENDPOINT } from "../config/base";
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const credentials = Object.fromEntries(formData);
-  console.log(credentials);
+  // console.log(credentials);
   const response = await fetch(`${BASE_ENDPOINT}/auth/register`, {
     method: "POST",
     credentials: "include",
@@ -19,7 +19,7 @@ export async function action({ request }: { request: Request }) {
   });
 
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   return redirect("/");
 }
 const Register: React.FC = () => {
@@ -30,11 +30,11 @@ const Register: React.FC = () => {
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
-  console.log(register, "register");
+  // console.log(register, "register");
   const handleOk = () => {
     // setModalText("The modal will be closed after two seconds");
     setConfirmLoading(true);
-    console.log();
+    // console.log();
     setTimeout(() => {
       toggleregisterModal(false);
       setConfirmLoading(false);
@@ -45,16 +45,16 @@ const Register: React.FC = () => {
     message.info(msg);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
+    // console.log("Clicked cancel button");
     toggleregisterModal(false);
     navigate(-1);
-    console.log(localregister, "localregister");
+    // console.log(localregister, "localregister");
   };
 
   const onFinish = async (value: { username: string; password: string }) => {
-    console.log(value);
+    // console.log(value);
     setConfirmLoading(true);
-    console.log();
+    // console.log();
 
     const response = await fetch(`${BASE_ENDPOINT}/auth/register`, {
       method: "POST",
@@ -66,7 +66,7 @@ const Register: React.FC = () => {
     });
 
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     toggleregisterModal(false);
     setConfirmLoading(false);
     if (data.success) {
@@ -176,7 +176,7 @@ const Register: React.FC = () => {
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue("password") === value) {
-                      console.log(value);
+                      // console.log(value);
                       return Promise.resolve();
                     }
                     return Promise.reject(

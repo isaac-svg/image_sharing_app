@@ -22,14 +22,14 @@ import { uploadResource, uploadImage } from "../lib/uploadtocloud";
 // import Select from "../components/Select";
 
 export async function action({ request }: { request: Request }) {
-  console.log(request);
+  // console.log(request);
   const formData = await request.formData();
-  console.log(formData);
+  // console.log(formData);
   const credentials = Object.fromEntries(formData);
   //   const { image } = credentials;
-  console.log(credentials);
+  // console.log(credentials);
   //   uploadImage(image as unknown as { image: string });
-  console.log(credentials);
+  // console.log(credentials);
   const response = await fetch("/myunsplash/create", {
     method: "POST",
     credentials: "include",
@@ -38,9 +38,9 @@ export async function action({ request }: { request: Request }) {
       "Content-Type": "application/json",
     },
   });
-  console.log(response, "response");
+  // console.log(response, "response");
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   return redirect("/");
 }
 
@@ -65,10 +65,10 @@ const Upload: React.FC = () => {
     message.info(msg);
   };
   const handleCancel = () => {
-    console.log("Clicked cancel button");
+    // console.log("Clicked cancel button");
     toggleuploadModal(false);
     navigate(-1);
-    console.log(locaupload, "locaupload");
+    // console.log(locaupload, "locaupload");
   };
   const handleUpload = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
@@ -102,44 +102,13 @@ const Upload: React.FC = () => {
       setIsError(true);
     }
   };
-  console.log(upload, "upload");
+  // console.log(upload, "upload");
 
   const onChange: CheckboxProps["onChange"] = (e) => {
-    console.log("checked = ", e.target.checked);
+    // console.log("checked = ", e.target.checked);
     setChecked(e.target.checked);
   };
 
-  // useEffect(() => {
-  //   function uploadFile(file: string) {
-  //     const url = `https://api.cloudinary.com/v1_1/${
-  //       import.meta.env.VITE_cloudName
-  //     }/upload`;
-  //     const fd = new FormData();
-  //     fd.append("upload_preset", import.meta.env.VITE_unsignedUploadPreset);
-  //     fd.append("tags", "browser_upload"); // Optional - add tags for image admin in Cloudinary
-  //     fd.append("file", file);
-
-  //     fetch(url, {
-  //       method: "POST",
-  //       body: fd,
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         // File uploaded successfully
-  //         const url = data.secure_url;
-  //         // Create a thumbnail of the uploaded image, with 150px width
-  //         const tokens = url.split("/");
-  //         tokens.splice(-3, 0, "w_150,c_scale");
-  //         const img = new Image();
-  //         img.src = tokens.join("/");
-  //         img.alt = data.public_id;
-  //         document?.getElementById("gallery")?.appendChild(img);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error uploading the file:", error);
-  //       });
-  //   }
-  // }, []);
   return (
     <>
       {isError && (

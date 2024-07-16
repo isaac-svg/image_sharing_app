@@ -19,15 +19,15 @@ const Update: React.FC = () => {
   // const [loading, setLoading] = useState(false);
   const toggleuploadModal = useModal((state) => state.toggleuploadModal);
   const authorId = useUser((state) => state.user.id);
-  console.log(authorId, "authorId");
+  // console.log(authorId, "authorId");
   const navigate = useNavigate();
   const { id } = useParams<"id">();
   const getImageById = useImages((state) => state.getImageById);
   const updateImage = useImages((state) => state.updateImage);
   const image = getImageById(id);
-  // console.log(image, "image");
+  console.log(image, "image");
   const handleCancel = () => {
-    console.log("Clicked cancel button");
+    // console.log("Clicked cancel button");
     toggleuploadModal(false);
     navigate(-1);
     // console.log(locaupload, "locaupload");
@@ -44,14 +44,14 @@ const Update: React.FC = () => {
       authorId,
       imageId: id as string,
     };
-    console.log(payload);
+    // console.log(payload);
     const response = await updateImage({
       url,
       description,
       authorId,
       imageId: payload.imageId,
     });
-    console.log(response, "response");
+    // console.log(response, "response");
 
     if (response) {
       setIsSuccess(true);
@@ -59,11 +59,11 @@ const Update: React.FC = () => {
       setConfirmLoading(false);
       toggleuploadModal(false);
     }
-    console.log(url);
-    console.log(response);
+    // console.log(url);
+    // console.log(response);
   };
   const onChange: CheckboxProps["onChange"] = (e) => {
-    console.log("checked = ", e.target.checked);
+    // console.log("checked = ", e.target.checked);
     setShowImageFields(e.target.checked);
   };
   return (

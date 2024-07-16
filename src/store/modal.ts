@@ -55,7 +55,7 @@ export const useModal = create<modal>()((set, get) => ({
   },
   toggleloginModal: (newVal) =>
     set((state) => {
-      console.log(state.localmodals.login, " This is state.localmodals.login ");
+      // console.log(state.localmodals.login, " This is state.localmodals.login ");
       return {
         ...state,
         localmodals: {
@@ -68,7 +68,7 @@ export const useModal = create<modal>()((set, get) => ({
     }),
   toggleregisterModal: (newVal) =>
     set((state) => {
-      console.log(state.localmodals.login, " This is state.localmodals.login ");
+      // console.log(state.localmodals.login, " This is state.localmodals.login ");
       return {
         ...state,
         localmodals: {
@@ -103,7 +103,7 @@ export const useModal = create<modal>()((set, get) => ({
         state.protectedmodals = { ...state.protectedmodals, loading: true };
         return state;
       });
-      // console.log(get().protectedmodals);
+      console.log(get().protectedmodals);
       const response = await fetch(`${BASE_ENDPOINT}/auth/profile`, {
         credentials: "include",
         headers: {
@@ -112,7 +112,7 @@ export const useModal = create<modal>()((set, get) => ({
       });
       const payload = await response.json();
       localStorage.setItem("userPayload", JSON.stringify(payload));
-      console.log(payload, "profile payload");
+      // console.log(payload, "profile payload");
       if (payload.id) {
         set((state) => {
           return {
@@ -131,10 +131,10 @@ export const useModal = create<modal>()((set, get) => ({
             },
           };
         });
-        console.log(get().protectedmodals);
+        // console.log(get().protectedmodals);
         get().toggleloginModal(false);
         get().toggleuploadModal(true);
-        console.log(get().protectedmodals, "protected modals");
+        // console.log(get().protectedmodals, "protected modals");
       } else {
         set((state) => {
           state.userPayload = { id: "", email: "", username: "" };
@@ -153,10 +153,10 @@ export const useModal = create<modal>()((set, get) => ({
           return state;
         });
         get().toggleloginModal(true);
-        console.log(get().protectedmodals);
+        // console.log(get().protectedmodals);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   },
   invalidateLogin: () =>

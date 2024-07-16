@@ -95,9 +95,9 @@ export const useImages = create<Page>()((set, get) => ({
     const data = await response.json();
     // console.log(data, "all images");
     if (data && data.posts) {
-      console.log(data.posts, "data.posts");
+      // console.log(data.posts, "data.posts");
       set((state) => {
-        state.page.posts = [...data.posts];
+        state.page.posts = [...data.posts].reverse();
         return state;
       });
     }
@@ -113,11 +113,11 @@ export const useImages = create<Page>()((set, get) => ({
         set((state) => ({
           page: {
             ...state.page,
-            posts: data.posts,
+            posts: [...data.posts],
           },
         }));
       }
-      console.log(get().page.posts);
+      // console.log(get().page.posts);
       return get().page.posts.reverse();
     } catch (error) {
       return;
@@ -225,7 +225,7 @@ export const useImages = create<Page>()((set, get) => ({
         credentials: "include",
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       set((state) => {
         if (data.success) {
           return {

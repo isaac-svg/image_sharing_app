@@ -17,7 +17,7 @@ import { BASE_ENDPOINT } from "../config/base";
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const credentials = Object.fromEntries(formData);
-  console.log(credentials);
+  // console.log(credentials);
   const response = await fetch(`${BASE_ENDPOINT}/auth/login`, {
     method: "POST",
     credentials: "include",
@@ -28,7 +28,7 @@ export async function action({ request }: { request: Request }) {
   });
 
   const data = await response.json();
-  console.log(data);
+  // console.log(data);
   // info({ msg: "login successfull" });
   return redirect("/");
 }
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
 
-  console.log(login, "login");
+  // console.log(login, "login");
 
   const info = ({ msg }: { msg: string }) => {
     message.info(msg);
@@ -51,7 +51,7 @@ const Login: React.FC = () => {
   const handleOk = () => {
     // setModalText("The modal will be closed after two seconds");
     setConfirmLoading(true);
-    console.log();
+    // console.log();
     setTimeout(() => {
       toggleloginModal(false);
       setConfirmLoading(false);
@@ -60,14 +60,14 @@ const Login: React.FC = () => {
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
+    // console.log("Clicked cancel button");
     toggleloginModal(false);
     navigate(-1);
-    console.log(locallogin, "locallogin");
+    // console.log(locallogin, "locallogin");
   };
 
   const onFinish = async (values: { username: string; password: string }) => {
-    console.log("Received values of form: ", values);
+    // console.log("Received values of form: ", values);
     setConfirmLoading(true);
     const response = await fetch(`${BASE_ENDPOINT}/auth/login`, {
       method: "POST",
@@ -78,7 +78,7 @@ const Login: React.FC = () => {
       },
     });
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (data.success) {
       info({ msg: "login successfull" });
       setConfirmLoading(false);

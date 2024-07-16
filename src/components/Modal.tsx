@@ -31,12 +31,8 @@ const Modal: React.FC = () => {
     message.info(msg);
   };
   const image = getImageById(id)!;
-  console.log(image?.likes, "image.likes");
-  console.log(image, "by getImageById(id)");
-  console.log(user, "user");
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
     navigate(-1);
   };
@@ -158,7 +154,7 @@ const Modal: React.FC = () => {
                         return;
                       }
                       setIsLiking(true);
-                      console.log({ imageId: id, authorId: user.id });
+                      // console.log({ imageId: id, authorId: user.id });
                       if (image.authorId === user.id) {
                         info({ msg: "You can not like your own image" });
                         return;
