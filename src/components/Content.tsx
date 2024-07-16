@@ -1,7 +1,7 @@
 import { Content as AntContent } from "antd/es/layout/layout";
 import { Link, Outlet } from "react-router-dom";
 import { SingleImage, useImages } from "../store/images";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import ContentSkeleton from "./ContentSkeleton";
 import Imageview from "./Imageview";
 import { BASE_ENDPOINT } from "../config/base";
@@ -17,6 +17,7 @@ const Content = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     fetchData(page);
@@ -24,12 +25,11 @@ const Content = () => {
   const fetchData = async (page: number) => {
     setLoading(true);
     const response = await getNextPage(page);
-    const newData = await response;
 
-    if (newData.length === 0) {
+    if (response.length === 0) {
       setHasMore(false);
     } else {
-      setData((prevData: any) => [...prevData, ...newData]);
+      setPosts((prevData: SingleImage[]) => [...prevData, ...response]);
     }
 
     setLoading(false);
@@ -78,20 +78,22 @@ const Content = () => {
           <ContentSkeleton />
         ) : (
           // <div className="bg-green-500 w-screen h-screen"></div>
-          _posts?.map((image) => {
+          _posts?.map((image, index) => {
             return (
-              <Imageview key={image._id}>
-                <Link
-                  to={`img/${image._id}`}
-                  className="masonry-item  shadow-sm   cursor-pointer  rounded-lg overflow-hidden  "
-                >
-                  <img
-                    src={`${image.base64Image || image.url}`}
-                    alt={`${image.category}`}
-                    className="object-cover h-full w-full"
-                  />
-                </Link>
-              </Imageview>
+              <div>
+                <Imageview key={image._id}>
+                  <Link
+                    to={`img/${image._id}`}
+                    className="masonry-item  shadow-sm   cursor-pointer  rounded-lg overflow-hidden  "
+                  >
+                    <img
+                      src={`${image.base64Image || image.url}`}
+                      alt={`${image.category}`}
+                      className="object-cover h-full w-full"
+                    />
+                  </Link>
+                </Imageview>
+              </div>
             );
           })
         )}

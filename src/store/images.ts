@@ -21,7 +21,7 @@ export type Page = {
     totalPages: number;
     currentPage: number;
   };
-  getImages: () => Promise<SingleImage[]>;
+  getImages: (page?: number, limit?: number) => Promise<SingleImage[]>;
   getNextPage: (nextPage: number) => Promise<SingleImage[]>;
 
   getImageById: (id: string | undefined) => SingleImage | undefined;
@@ -88,8 +88,10 @@ export const useImages = create<Page>()((set, get) => ({
     }
     return get().page.posts.reverse();
   },
-  getImages: async () => {
-    const response = await fetch(`${BASE_ENDPOINT}/all`);
+  getImages: async (page, limit) => {
+    const response = await fetch(
+      `${BASE_ENDPOINT}/all?page=${page}&limit=${limit}`
+    );
     const data = await response.json();
     // console.log(data, "all images");
     if (data && data.posts) {
