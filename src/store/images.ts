@@ -21,7 +21,7 @@ export type Page = {
     totalPages: number;
     currentPage: number;
   };
-  getImages: (page?: number, limit?: number) => Promise<SingleImage[]>;
+  getImages: (page?: number, size?: number) => Promise<SingleImage[]>;
   getNextPage: (nextPage: number) => Promise<SingleImage[]>;
 
   getImageById: (id: string | undefined) => SingleImage | undefined;
@@ -50,7 +50,7 @@ export type Page = {
     category,
   }: {
     category: string;
-    base64Image: string | undefined;
+    base64Image?: string | undefined;
     url: string | undefined;
     description: string;
   }) => Promise<SingleImage[]>;
@@ -63,10 +63,10 @@ export type Page = {
     imageAuthorId: string;
     voterId: string;
   }) => Promise<SingleImage[] | undefined>;
-  searchCategory: ({
-    category,
+  queryData: ({
+    query,
   }: {
-    category: string | undefined;
+    query: string | undefined;
   }) => Promise<SingleImage[] | undefined>;
 };
 export const useImages = create<Page>()((set, get) => ({
@@ -88,13 +88,14 @@ export const useImages = create<Page>()((set, get) => ({
     }
     return get().page.posts.reverse();
   },
-  getImages: async (page, limit) => {
+  getImages: async (page, size) => {
     const response = await fetch(
-      `${BASE_ENDPOINT}/all?page=${page}&limit=${limit}`
+      `${BASE_ENDPOINT}/all?page=${page}&size=${size}`
     );
     const data = await response.json();
     // console.log(data, "all images");
     if (data && data.posts) {
+      console.log(data.posts, "data.posts");
       set((state) => {
         state.page.posts = [...data.posts];
         return state;
@@ -103,9 +104,9 @@ export const useImages = create<Page>()((set, get) => ({
     return get().page.posts.reverse();
   },
 
-  searchCategory: async ({ category }: { category: string | undefined }) => {
+  queryData: async ({ query }: { query: string | undefined }) => {
     try {
-      const response = await fetch(`${BASE_ENDPOINT}/all?category=${category}`);
+      const response = await fetch(`${BASE_ENDPOINT}/query?query=${query}`);
       const data = await response.json();
       // console.log(data, "all images");
       if (data && data.posts) {
@@ -119,6 +120,7 @@ export const useImages = create<Page>()((set, get) => ({
       console.log(get().page.posts);
       return get().page.posts.reverse();
     } catch (error) {
+      return;
       console.log(error);
     }
   },
@@ -128,7 +130,7 @@ export const useImages = create<Page>()((set, get) => ({
     category,
     description,
   }: {
-    base64Image: string | undefined;
+    base64Image?: string | undefined;
     url: string | undefined;
     category: string;
     description: string;

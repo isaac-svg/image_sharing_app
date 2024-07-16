@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Input } from "antd";
+import { Input, message } from "antd";
 import { useImages } from "../store/images";
+import Message from "./Message";
 
 const { Search } = Input;
 type Props = {
@@ -9,20 +10,38 @@ type Props = {
 
 const SearchBox = ({ loading }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [category, setCategory] = useState<string | undefined>();
-  const searchCategory = useImages((state) => state.searchCategory);
+  const [query, setQuery] = useState<string | undefined>("");
+  const [isError, setIsError] = useState<boolean>(false);
+
+  const queryData = useImages((state) => state.queryData);
+  const [messageApi, contextHolder] = message.useMessage();
+  const giveError = (text: string) => {
+    messageApi.open({
+      type: "error",
+      content: text,
+    });
+  };
 
   return (
     <>
+      {/* <Message /> */}
+      {contextHolder}
       <Search
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
         placeholder="input search loading default"
         loading={isLoading}
-        // onClick={async () => await searchCategory({ category })}
+        onSubmit={() => {
+          if (query?.trim() === "") return;
+          if (isLoading) giveError("Allow your previous memory to settle");
+        }}
+        // onClick={async () => await queryData({ query })}
         onSearch={async () => {
           setIsLoading(true);
-          await searchCategory({ category });
+          const result = await queryData({ query });
+          if (!result) {
+            giveError("Error Querying results");
+          }
           setIsLoading(false);
         }}
       />

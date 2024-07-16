@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import {
   Button,
   Input,
@@ -17,6 +17,7 @@ import { redirect } from "react-router-dom";
 import { UploadOutlined } from "@ant-design/icons";
 import { convertFileToBase64 } from "../lib/base64";
 import { useImages } from "../store/images";
+import { uploadResource, uploadImage } from "../lib/uploadtocloud";
 // import { uploadImage } from "../lib/uploadtocloud";
 // import Select from "../components/Select";
 
@@ -54,7 +55,7 @@ const Upload: React.FC = () => {
   const [category, setCategory] = useState<string>();
   const fileRef = useRef<HTMLInputElement>(null);
   const { upload } = useModal((state) => state.protectedmodals);
-  const uploadImage = useImages((state) => state.createImage);
+  const createPost = useImages((state) => state.createImage);
   const { upload: locaupload } = useModal((state) => state.localmodals);
   const toggleuploadModal = useModal((state) => state.toggleuploadModal);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -79,14 +80,13 @@ const Upload: React.FC = () => {
     setConfirmLoading(true);
 
     const filedata = fileRef.current?.files?.[0] as Blob;
-    const base64Image = (await convertFileToBase64(filedata)) as
-      | string
-      | undefined;
-    setFilename(fileRef.current?.files?.[0]?.name);
 
-    const response = await uploadImage({
-      base64Image,
-      url,
+    setFilename(fileRef.current?.files?.[0]?.name);
+    const cloudUrl = await uploadImage(filedata);
+    if (!cloudUrl) return;
+    const imageURL = url ? url : cloudUrl;
+    const response = await createPost({
+      url: imageURL,
       category,
       description,
     });
@@ -108,6 +108,38 @@ const Upload: React.FC = () => {
     console.log("checked = ", e.target.checked);
     setChecked(e.target.checked);
   };
+
+  // useEffect(() => {
+  //   function uploadFile(file: string) {
+  //     const url = `https://api.cloudinary.com/v1_1/${
+  //       import.meta.env.VITE_cloudName
+  //     }/upload`;
+  //     const fd = new FormData();
+  //     fd.append("upload_preset", import.meta.env.VITE_unsignedUploadPreset);
+  //     fd.append("tags", "browser_upload"); // Optional - add tags for image admin in Cloudinary
+  //     fd.append("file", file);
+
+  //     fetch(url, {
+  //       method: "POST",
+  //       body: fd,
+  //     })
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         // File uploaded successfully
+  //         const url = data.secure_url;
+  //         // Create a thumbnail of the uploaded image, with 150px width
+  //         const tokens = url.split("/");
+  //         tokens.splice(-3, 0, "w_150,c_scale");
+  //         const img = new Image();
+  //         img.src = tokens.join("/");
+  //         img.alt = data.public_id;
+  //         document?.getElementById("gallery")?.appendChild(img);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error uploading the file:", error);
+  //       });
+  //   }
+  // }, []);
   return (
     <>
       {isError && (

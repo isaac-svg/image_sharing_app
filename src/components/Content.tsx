@@ -4,7 +4,7 @@ import { SingleImage, useImages } from "../store/images";
 import { useCallback, useEffect, useRef, useState } from "react";
 import ContentSkeleton from "./ContentSkeleton";
 import Imageview from "./Imageview";
-import { BASE_ENDPOINT } from "../config/base";
+// import { BASE_ENDPOINT } from "../config/base";
 
 const Content = () => {
   const posts = useImages((state) => state.page.posts);
@@ -13,11 +13,10 @@ const Content = () => {
   const getImages = useImages((state) => state.getImages);
   const getNextPage = useImages((state) => state.getNextPage);
 
-  const [data, setData] = useState<any>([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const observer = useRef<IntersectionObserver | null>(null);
+  // const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     fetchData(page);
@@ -54,7 +53,7 @@ const Content = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const payload = await getImages();
+        const payload = await getImages(0, 15);
         setPosts(payload);
         console.log({ payload });
         if (!payload.length) {
@@ -78,9 +77,9 @@ const Content = () => {
           <ContentSkeleton />
         ) : (
           // <div className="bg-green-500 w-screen h-screen"></div>
-          _posts?.map((image, index) => {
+          _posts?.map((image) => {
             return (
-              <div>
+              <>
                 <Imageview key={image._id}>
                   <Link
                     to={`img/${image._id}`}
@@ -93,7 +92,7 @@ const Content = () => {
                     />
                   </Link>
                 </Imageview>
-              </div>
+              </>
             );
           })
         )}
