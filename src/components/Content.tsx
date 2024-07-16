@@ -19,7 +19,7 @@ const Content = () => {
   // const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    fetchData(page);
+    // fetchData(page);
   }, [page]);
   const fetchData = async (page: number) => {
     setLoading(true);
@@ -42,7 +42,7 @@ const Content = () => {
     ) {
       return;
     }
-    setPage((prevPage) => prevPage + 1);
+    // setPage((prevPage) => prevPage + 1);
   }, [loading, hasMore]);
 
   useEffect(() => {
@@ -55,6 +55,7 @@ const Content = () => {
       try {
         const payload = await getImages(0, 15);
         setPosts(payload);
+        // posts.push(payload)
         if (!payload.length) {
         }
       } catch (error) {
@@ -64,9 +65,10 @@ const Content = () => {
 
     fetchData();
   }, []);
-  // useEffect(() => {
-  //   setPosts(posts);
-  // }, []);
+
+  useEffect(() => {
+    setPosts(posts);
+  }, [posts]);
 
   return (
     <AntContent className="h-auto min-h-screen px-2 py-4">

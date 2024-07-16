@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Modal as AntModal, Button, Image, Spin, message } from "antd";
 import { Link, useNavigate, useParams } from "react-router-dom";
-// import { getImageById } from "../dummydata/images";
 import { useImages } from "../store/images";
 import { useUser } from "../store/user";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -19,7 +18,7 @@ const Modal: React.FC = () => {
   // const [confirmLoading, setConfirmLoading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams<"id">();
-
+  console.log(id, "ID");
   useEffect(() => {
     async function getuser() {
       await getUserPayload();
@@ -31,6 +30,7 @@ const Modal: React.FC = () => {
     message.info(msg);
   };
   const image = getImageById(id)!;
+  console.log(image, "IMAGE");
 
   const handleCancel = () => {
     setOpen(false);
@@ -39,20 +39,14 @@ const Modal: React.FC = () => {
 
   return (
     <>
-      {isDeleting && (
-        <Alert
-          message="Memory deleting successful"
-          className="h-14 bg-green absolute top-5 right-5 z-[9999]"
-          type="success"
-          showIcon
-          closable
-        />
-      )}
-
       <div>
         <AntModal
           centered
-          title={`Image posted by ${user?.name}`}
+          title={` ${
+            user?.name === image?.authorName
+              ? "You are the author of this memory"
+              : `Memory shared by ${image?.authorName}`
+          }`}
           open={typeof id === "string" && !open}
           // onOk={handleVote}
           // confirmLoading={confirmLoading}

@@ -21,13 +21,13 @@ const Header = () => {
     <AntHeader className="border-b-2 min-h-14  w-full px-2 mx-auto bg-white">
       <Flex
         gap="small"
-        className="w-full   "
+        className="w-full  "
         align="center"
         justify="space-between"
       >
-        <Flex align="center" gap="small">
+        <Flex align="center" gap="small" className="flex-[0.7] gap-4">
           <div>
-            <span className="text-2xl font-bold ">lvShare</span>
+            <span className="text-2xl font-bold ">MemShare</span>
           </div>
           <SearchBox loading={true} />
         </Flex>

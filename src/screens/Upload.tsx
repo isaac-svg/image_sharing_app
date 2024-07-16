@@ -18,6 +18,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { convertFileToBase64 } from "../lib/base64";
 import { useImages } from "../store/images";
 import { uploadResource, uploadImage } from "../lib/uploadtocloud";
+import { User } from "../store/user";
 // import { uploadImage } from "../lib/uploadtocloud";
 // import Select from "../components/Select";
 
@@ -72,6 +73,7 @@ const Upload: React.FC = () => {
   };
   const handleUpload = async (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
+    console.log("I am being called");
     if (!category) {
       setIsError(true);
       return;
@@ -82,13 +84,19 @@ const Upload: React.FC = () => {
     const filedata = fileRef.current?.files?.[0] as Blob;
 
     setFilename(fileRef.current?.files?.[0]?.name);
-    const cloudUrl = await uploadImage(filedata);
-    if (!cloudUrl) return;
+    let cloudUrl;
+    if (filedata) {
+      cloudUrl = await uploadImage(filedata);
+    }
+    if (filedata && !cloudUrl) return;
     const imageURL = url ? url : cloudUrl;
+    let userPayload = JSON.parse(localStorage.getItem("userPayload") ?? "{}");
+
     const response = await createPost({
       url: imageURL,
       category,
       description,
+      authorName: userPayload.name,
     });
 
     if (response.length) {

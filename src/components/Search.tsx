@@ -29,16 +29,26 @@ const SearchBox = ({ loading }: Props) => {
       <Search
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="input search loading default"
+        placeholder="input search loading default flex-1"
         loading={isLoading}
         onSubmit={() => {
-          if (query?.trim() === "") return;
+          if (query?.trim() === "") {
+            giveError("Please query for something");
+            return;
+          }
           if (isLoading) giveError("Allow your previous memory to settle");
         }}
         // onClick={async () => await queryData({ query })}
         onSearch={async () => {
           setIsLoading(true);
+          if (query?.trim() === "") {
+            giveError("Please query for something");
+            setIsLoading(false);
+            return;
+          }
+          if (isLoading) giveError("Allow your previous memory to settle");
           const result = await queryData({ query });
+          console.log(result);
           if (!result) {
             giveError("Error Querying results");
           }

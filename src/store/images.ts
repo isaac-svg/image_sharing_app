@@ -4,6 +4,7 @@ import { BASE_ENDPOINT } from "../config/base";
 export type SingleImage = {
   _id: string;
   authorId: string;
+  authorName: string;
   description: string;
   url?: string;
   likes: string[];
@@ -48,11 +49,13 @@ export type Page = {
     description,
     base64Image,
     category,
+    authorName,
   }: {
     category: string;
     base64Image?: string | undefined;
     url: string | undefined;
     description: string;
+    authorName: string;
   }) => Promise<SingleImage[]>;
   voteImage: ({
     imageId,
@@ -93,11 +96,11 @@ export const useImages = create<Page>()((set, get) => ({
       `${BASE_ENDPOINT}/all?page=${page}&size=${size}`
     );
     const data = await response.json();
-    // console.log(data, "all images");
+    console.log(data, "all images");
     if (data && data.posts) {
       // console.log(data.posts, "data.posts");
       set((state) => {
-        state.page.posts = [...data.posts].reverse();
+        state.page.posts = [...data.posts];
         return state;
       });
     }
@@ -129,17 +132,20 @@ export const useImages = create<Page>()((set, get) => ({
     url,
     category,
     description,
+    authorName,
   }: {
     base64Image?: string | undefined;
     url: string | undefined;
     category: string;
     description: string;
+    authorName: string;
   }) => {
     const payload = {
       base64Image,
       url,
       category,
       description,
+      authorName,
     };
     try {
       const response = await fetch(`${BASE_ENDPOINT}/myunsplash/create`, {
@@ -151,7 +157,7 @@ export const useImages = create<Page>()((set, get) => ({
         },
       });
       const data = await response.json();
-      // console.log(data, "just data");
+      console.log(data, "just data");
       set((state) => {
         if (data._id) {
           // console.log(data, "data._id");
@@ -272,13 +278,16 @@ export const useImages = create<Page>()((set, get) => ({
     const data = await response.json();
 
     set((state) => {
-      state.page.posts = { ...state.page.posts, ...data };
+      state.page.posts = [...state.page.posts, ...data];
       return state;
     });
-    await get().getImages();
+    // await get().getImages();
     return get().page.posts.reverse();
   },
   getImageById: (id: string | undefined) => {
-    return get().page.posts.find((image) => image._id === id);
+    return get().page.posts.find((image) => {
+      // console.log(image, "IMAGE THAT IA MA LOOKING FOR ID");
+      return image._id === id;
+    });
   },
 }));

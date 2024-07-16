@@ -1,22 +1,26 @@
-import { Checkbox, CheckboxProps, Form, Image, Modal } from "antd";
+import { Checkbox, CheckboxProps, Form, Image, Modal, message } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
 import { useImages } from "../store/images";
 import { Input } from "antd";
 import { FormEvent, useState } from "react";
 import { useModal } from "../store/modal";
 import { useUser } from "../store/user";
+import { NoticeType } from "antd/es/message/interface";
 const { TextArea } = Input;
 
 const Update: React.FC = () => {
   const [url, setUrl] = useState<string>();
-  const [description, setDescription] = useState<string>("");
 
   const [showImageFields, setShowImageFields] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-
-  // const [isError, setIsError] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const alertModal = (text: string, type: NoticeType) => {
+    messageApi.open({
+      type: type,
+      content: text,
+    });
+  };
   const [isSuccess, setIsSuccess] = useState(false);
-  // const [loading, setLoading] = useState(false);
   const toggleuploadModal = useModal((state) => state.toggleuploadModal);
   const authorId = useUser((state) => state.user.id);
   // console.log(authorId, "authorId");
@@ -25,6 +29,9 @@ const Update: React.FC = () => {
   const getImageById = useImages((state) => state.getImageById);
   const updateImage = useImages((state) => state.updateImage);
   const image = getImageById(id);
+  const imageDescription = image?.description as string;
+  const [description, setDescription] = useState<string>(imageDescription);
+
   console.log(image, "image");
   const handleCancel = () => {
     // console.log("Clicked cancel button");
@@ -53,11 +60,17 @@ const Update: React.FC = () => {
     });
     // console.log(response, "response");
 
-    if (response) {
+    if (response.length) {
       setIsSuccess(true);
+      alertModal("Update successful", "success");
       // setLoading(false);
       setConfirmLoading(false);
       toggleuploadModal(false);
+    } else {
+      alertModal("Update failed", "error");
+      setConfirmLoading(false);
+      toggleuploadModal(false);
+      setIsSuccess(true);
     }
     // console.log(url);
     // console.log(response);
@@ -69,6 +82,7 @@ const Update: React.FC = () => {
   return (
     <>
       <>
+        {contextHolder}
         {isSuccess ?? <p>Success</p>}
         <Modal
           title="Update"
