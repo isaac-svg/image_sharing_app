@@ -1,7 +1,7 @@
 import { Content as AntContent } from "antd/es/layout/layout";
 import { Link, Outlet } from "react-router-dom";
 import { SingleImage, useImages } from "../store/images";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ContentSkeleton from "./ContentSkeleton";
 import Imageview from "./Imageview";
 // import { BASE_ENDPOINT } from "../config/base";
@@ -11,39 +11,37 @@ const Content = () => {
   const [_posts, setPosts] = useState<SingleImage[]>([]);
   // const posts = useImages((state) => state.page.posts);
   const getImages = useImages((state) => state.getImages);
-  const getNextPage = useImages((state) => state.getNextPage);
+  // const getNextPage = useImages((state) => state.getNextPage);
 
-  const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  // const [page, setPage] = useState(0);
+  // const [loading, setLoading] = useState(false);
+  // const [hasMore, setHasMore] = useState(true);
   // const observer = useRef<IntersectionObserver | null>(null);
 
-  useEffect(() => {
-    // fetchData(page);
-  }, [page]);
-  const fetchData = async (page: number) => {
-    setLoading(true);
-    const response = await getNextPage(page);
+  // useEffect(() => {
+  //   // fetchData(page);
+  // }, [page]);
+  // const fetchData = async (page: number) => {
+  //   setLoading(true);
+  //   const response = await getNextPage(page);
 
-    if (response.length === 0) {
-      setHasMore(false);
-    } else {
-      // setPosts((prevData: SingleImage[]) => [...response]);
-    }
+  //   if (response.length === 0) {
+  //     setHasMore(false);
+  //   } else {
+  //     // setPosts((prevData: SingleImage[]) => [...response]);
+  //   }
 
-    setLoading(false);
-  };
+  //   setLoading(false);
+  // };
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      loading ||
-      !hasMore
+      document.documentElement.offsetHeight
     ) {
       return;
     }
     // setPage((prevPage) => prevPage + 1);
-  }, [loading, hasMore]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
