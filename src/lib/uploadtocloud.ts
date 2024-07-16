@@ -1,16 +1,10 @@
 // const cloudinary = require("cloudinary").v2;
-import { v2 as cloudinary } from "cloudinary";
-import { type UploadApiOptions } from "cloudinary";
+// import { v2 as cloudinary } from "cloudinary";
+// import { type UploadApiOptions } from "cloudinary";
 
-const opts: UploadApiOptions = {
-  overwrite: true,
-  invalidate: true,
-  resource_type: "auto",
-};
-
-export const uploadResource = ({ image }: { image: string }) => {
+export const uploadResource = () => {
   //imgage = > base64
-  return new Promise((resolve, reject) => {
+  return new Promise(() => {
     // cloudinary.uploader.upload(image, opts, (error, result) => {
     //   console.log(result);
     //   if (result && result.secure_url) {

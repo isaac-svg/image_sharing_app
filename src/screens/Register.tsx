@@ -9,7 +9,7 @@ export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const credentials = Object.fromEntries(formData);
   // console.log(credentials);
-  const response = await fetch(`${BASE_ENDPOINT}/auth/register`, {
+  await fetch(`${BASE_ENDPOINT}/auth/register`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({ ...credentials }),
@@ -18,13 +18,13 @@ export async function action({ request }: { request: Request }) {
     },
   });
 
-  const data = await response.json();
+  // const data = await response.json();
   // console.log(data);
   return redirect("/");
 }
 const Register: React.FC = () => {
-  const { register } = useModal((state) => state.protectedmodals);
-  const { register: localregister } = useModal((state) => state.localmodals);
+  // const { register } = useModal((state) => state.protectedmodals);
+  // const { register: localregister } = useModal((state) => state.localmodals);
   const toggleregisterModal = useModal((state) => state.toggleregisterModal);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [isError, setIsError] = useState(false);

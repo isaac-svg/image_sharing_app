@@ -18,7 +18,7 @@ export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const credentials = Object.fromEntries(formData);
   // console.log(credentials);
-  const response = await fetch(`${BASE_ENDPOINT}/auth/login`, {
+  await fetch(`${BASE_ENDPOINT}/auth/login`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({ ...credentials }),
@@ -27,7 +27,7 @@ export async function action({ request }: { request: Request }) {
     },
   });
 
-  const data = await response.json();
+  // const data = await response.json();
   // console.log(data);
   // info({ msg: "login successfull" });
   return redirect("/");
