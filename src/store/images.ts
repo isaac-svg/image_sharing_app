@@ -22,6 +22,8 @@ export type Page = {
     currentPage: number;
   };
   getImages: () => Promise<SingleImage[]>;
+  getNextPage: (nextPage: number) => Promise<SingleImage[]>;
+
   getImageById: (id: string | undefined) => SingleImage | undefined;
   deleteImage: ({
     imageId,
@@ -73,6 +75,18 @@ export const useImages = create<Page>()((set, get) => ({
     posts: [],
     totalPages: 0,
     currentPage: 0,
+  },
+  getNextPage: async (nextPage) => {
+    const response = await fetch(`${BASE_ENDPOINT}/all?page=${nextPage}`);
+    const data = await response.json();
+    // console.log(data, "all images");
+    if (data && data.posts) {
+      set((state) => {
+        state.page.posts = [...data.posts];
+        return state;
+      });
+    }
+    return get().page.posts.reverse();
   },
   getImages: async () => {
     const response = await fetch(`${BASE_ENDPOINT}/all`);

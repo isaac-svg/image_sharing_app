@@ -4,6 +4,7 @@ import { SingleImage, useImages } from "../store/images";
 import { useCallback, useEffect, useState } from "react";
 import ContentSkeleton from "./ContentSkeleton";
 import Imageview from "./Imageview";
+import { BASE_ENDPOINT } from "../config/base";
 
 const Content = () => {
   const posts = useImages((state) => state.page.posts);
@@ -15,6 +16,39 @@ const Content = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+
+  useEffect(() => {
+    fetchData(page);
+  }, [page]);
+  const fetchData = async (page: number) => {
+    setLoading(true);
+    const response = await fetch(`${BASE_ENDPOINT}/all?page=${page}`);
+    const newData = await response.json();
+
+    if (newData.length === 0) {
+      setHasMore(false);
+    } else {
+      setData((prevData: any) => [...prevData, ...newData]);
+    }
+
+    setLoading(false);
+  };
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight ||
+      loading ||
+      !hasMore
+    ) {
+      return;
+    }
+    setPage((prevPage) => prevPage + 1);
+  }, [loading, hasMore]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   useEffect(() => {
     const fetchData = async () => {
