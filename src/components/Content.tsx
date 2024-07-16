@@ -1,7 +1,7 @@
 import { Content as AntContent } from "antd/es/layout/layout";
 import { Link, Outlet } from "react-router-dom";
 import { SingleImage, useImages } from "../store/images";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ContentSkeleton from "./ContentSkeleton";
 import Imageview from "./Imageview";
 
@@ -10,6 +10,11 @@ const Content = () => {
   const [_posts, setPosts] = useState<SingleImage[]>([]);
   // const posts = useImages((state) => state.page.posts);
   const getImages = useImages((state) => state.getImages);
+
+  const [data, setData] = useState<any>([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {

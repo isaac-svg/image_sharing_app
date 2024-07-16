@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Input } from "antd";
 import { useImages } from "../store/images";
 
@@ -8,6 +8,7 @@ type Props = {
 };
 
 const SearchBox = ({ loading }: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState<string | undefined>();
   const searchCategory = useImages((state) => state.searchCategory);
 
@@ -17,10 +18,12 @@ const SearchBox = ({ loading }: Props) => {
         value={category}
         onChange={(e) => setCategory(e.target.value)}
         placeholder="input search loading default"
-        loading={loading}
+        loading={isLoading}
         // onClick={async () => await searchCategory({ category })}
         onSearch={async () => {
+          setIsLoading(true);
           await searchCategory({ category });
+          setIsLoading(false);
         }}
       />
     </>
