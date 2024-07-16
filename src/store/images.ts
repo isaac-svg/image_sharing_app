@@ -82,7 +82,7 @@ export const useImages = create<Page>()((set, get) => ({
     // console.log(data, "all images");
     if (data && data.posts) {
       set((state) => {
-        state.page.posts = [...data.posts];
+        state.page.posts = [...state.page.posts, ...data.posts];
         return state;
       });
     }

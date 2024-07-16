@@ -11,6 +11,7 @@ const Content = () => {
   const [_posts, setPosts] = useState<SingleImage[]>([]);
   // const posts = useImages((state) => state.page.posts);
   const getImages = useImages((state) => state.getImages);
+  const getNextPage = useImages((state) => state.getNextPage);
 
   const [data, setData] = useState<any>([]);
   const [page, setPage] = useState(0);
@@ -22,8 +23,8 @@ const Content = () => {
   }, [page]);
   const fetchData = async (page: number) => {
     setLoading(true);
-    const response = await fetch(`${BASE_ENDPOINT}/all?page=${page}`);
-    const newData = await response.json();
+    const response = await getNextPage(page);
+    const newData = await response;
 
     if (newData.length === 0) {
       setHasMore(false);
