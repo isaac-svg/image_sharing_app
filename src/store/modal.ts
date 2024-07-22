@@ -64,6 +64,12 @@ export const useModal = create<modal>()((set, get) => ({
           register: false,
           upload: false,
         },
+        protectedmodals: {
+          login: newVal,
+          loading: false,
+          register: false,
+          upload: false,
+        },
       };
     }),
   toggleregisterModal: (newVal) =>
@@ -103,7 +109,7 @@ export const useModal = create<modal>()((set, get) => ({
         state.protectedmodals = { ...state.protectedmodals, loading: true };
         return state;
       });
-      console.log(get().protectedmodals);
+      // console.log(get().protectedmodals);
       const response = await fetch(`${BASE_ENDPOINT}/auth/profile`, {
         credentials: "include",
         headers: {
