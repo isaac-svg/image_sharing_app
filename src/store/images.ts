@@ -278,8 +278,18 @@ export const useImages = create<Page>()((set, get) => ({
     const data = await response.json();
 
     set((state) => {
-      state.page.posts = [...state.page.posts, ...data];
-      return state;
+      return {
+        ...state,
+        page: {
+          posts: [
+            ...state.page.posts.filter((image) => image._id !== imageId),
+            ...data,
+          ],
+          currentPage: state.page.currentPage,
+          totalImages: state.page.totalImages,
+          totalPages: state.page.totalImages,
+        },
+      };
     });
     // await get().getImages();
     return get().page.posts.reverse();

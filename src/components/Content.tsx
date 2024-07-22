@@ -9,30 +9,8 @@ import Imageview from "./Imageview";
 const Content = () => {
   const posts = useImages((state) => state.page.posts);
   const [_posts, setPosts] = useState<SingleImage[]>([]);
-  // const posts = useImages((state) => state.page.posts);
   const getImages = useImages((state) => state.getImages);
-  // const getNextPage = useImages((state) => state.getNextPage);
 
-  // const [page, setPage] = useState(0);
-  // const [loading, setLoading] = useState(false);
-  // const [hasMore, setHasMore] = useState(true);
-  // const observer = useRef<IntersectionObserver | null>(null);
-
-  // useEffect(() => {
-  //   // fetchData(page);
-  // }, [page]);
-  // const fetchData = async (page: number) => {
-  //   setLoading(true);
-  //   const response = await getNextPage(page);
-
-  //   if (response.length === 0) {
-  //     setHasMore(false);
-  //   } else {
-  //     // setPosts((prevData: SingleImage[]) => [...response]);
-  //   }
-
-  //   setLoading(false);
-  // };
   const handleScroll = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop !==
@@ -40,7 +18,6 @@ const Content = () => {
     ) {
       return;
     }
-    // setPage((prevPage) => prevPage + 1);
   }, []);
 
   useEffect(() => {
