@@ -36,7 +36,7 @@ const Update: React.FC = () => {
   const handleCancel = () => {
     // console.log("Clicked cancel button");
     toggleuploadModal(false);
-    navigate(-1);
+    navigate("/");
     // console.log(locaupload, "locaupload");
   };
   const handleUpload = async (e: FormEvent<HTMLElement>) => {

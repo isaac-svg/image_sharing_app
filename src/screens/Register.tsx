@@ -4,6 +4,7 @@ import { useModal } from "../store/modal";
 import { Form, Link, useNavigate } from "react-router-dom";
 import { redirect } from "react-router-dom";
 import { BASE_ENDPOINT } from "../config/base";
+import { NoticeType } from "antd/es/message/interface";
 
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
@@ -28,6 +29,14 @@ const Register: React.FC = () => {
   const toggleregisterModal = useModal((state) => state.toggleregisterModal);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const alertModal = (text: string, type: NoticeType) => {
+    messageApi.open({
+      type: type,
+      content: text,
+    });
+  };
+
   const navigate = useNavigate();
 
   // console.log(register, "register");
@@ -65,15 +74,23 @@ const Register: React.FC = () => {
       },
     });
 
-    const data = await response.json();
+    const data = (await response.json()) as {
+      success: boolean;
+      message: string;
+    };
     // console.log(data);
-    toggleregisterModal(false);
     setConfirmLoading(false);
+    toggleregisterModal(false);
     if (data.success) {
       info({ msg: "Registration successful" });
-      redirect("/login");
+      navigate("/login");
+      window.location.reload();
     } else {
       setIsError(true);
+      if (isError && data.message.includes("E11000")) {
+        alertModal("Username or Email is already taken", "error");
+      }
+
       setTimeout(() => {
         setIsError(false);
       }, 3000);
@@ -82,14 +99,7 @@ const Register: React.FC = () => {
 
   return (
     <>
-      {isError && (
-        <Alert
-          closable
-          type="error"
-          className="absolute top-5 right-5 z-[9999]"
-          message="Registration failed "
-        />
-      )}
+      {contextHolder}
       <Form method="post">
         {/* <Button type="primary" onClick={showModal}>
         Open Modal with async logic
@@ -193,7 +203,11 @@ const Register: React.FC = () => {
 
             <div className="mr-auto  mb-4 gap-4  flex justify-end">
               <Button onClick={handleCancel}>Cancel</Button>
-              <Button htmlType="submit" className="bg-blue-500 text-white">
+              <Button
+                htmlType="submit"
+                loading={confirmLoading}
+                className="bg-blue-500 text-white"
+              >
                 {/* <button type="submit">register</button> */}
                 Register
               </Button>
